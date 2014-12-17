@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/style.css" />
+    <title> OST Final </title>
+</head>
+  <body>
+  {% if following %}
+  <div id="container" aligh="center">
+<div id="header">
+    <h1>{{ question.title|safe}}</h1>
+    </div>
+    <div id="content">
+    <i>created time: {{ question.createDate.strftime("%y/%m/%d %H:%M:%S") }}<br/></i>
+    <i>latest modified time: {{ question.modifyDate.strftime("%y/%m/%d %H:%M:%S") }}<br/></i>
+    <i>questioned by: {{ question.author }}<br/></i>
+    <i>tag: 
+    {% for sitag in question.tag %}
+    &nbsp;&nbsp;-<a href="{{ ('/tag?type=' + sitag) |safe }}">{{ sitag}}</a>
+    {% endfor %}<br/></i>
+    <i>Vote Score: {{ question.voteScore }}<br/><br/></i>
+    <i>{{ question.content }}<br/></i>
+  </div>
+  <hr>
+  <div id="newcontent">
+    <h3>{{ user.nickname() }}, Create your follow question</h3>
+  <br/>
+    <form action="/question" method="post">
+    <input type="hidden" name="fquestion" value="{{ question.key.urlsafe() }}">
+      <div>Title: </br><textarea name="qtitle" rows="3" cols="60" required>Type your question title here ...</textarea></div>
+      <div>Content: </br><textarea name="qcontent" rows="10" cols="60" required>Type your question content here ...</textarea></div>
+      <div>
+      <input type="submit" value="Submit Question">&nbsp;
+      <input type="reset" value="Reset">
+      </div>
+    </form>
+    <a href="/">Back</a>
+  </div>
+  {% elif question %}
+  <div id="container" aligh="center">
+<div id="header">
+    <h1>{{ user.nickname() }}, Edit your question</h1>
+  <br/>
+  </div>
+  <div id="newcontent">
+    <form action="/question" method="post">
+    <input type="hidden" name="equestion" value="{{ question.key.urlsafe() }}">
+      <div>Title: </br><textarea name="eqtitle" rows="3" cols="60" required>{{ question.title }}</textarea></div>
+      <div>Content: </br><textarea name="eqcontent" rows="10" cols="60" required>{{ question.content }}</textarea></div>
+      <div>
+        Tag:<br/>
+        <input type="checkbox" name="eqtag" value="Movie">Movie<br>
+        <input type="checkbox" name="eqtag" value="Music">Music<br>
+        <input type="checkbox" name="eqtag" value="Sports">Sports<br>
+        <input type="checkbox" name="eqtag" value="Programming">Programming<br>
+        <input type="checkbox" name="eqtag" value="Travel">Travel
+      </div>
+      <div>
+      <input type="submit" value="Finish Edit">&nbsp;
+      <input type="reset" value="Reset">
+      </div>
+    </form>
+    <a href="/">Back</a>
+  </div>
+  {% elif fquestion %}
+  <div id="container" aligh="center">
+<div id="header">
+    <h1>{{ user.nickname() }}, Edit your following question</h1>
+  <br/>
+  </div>
+  <div id="newcontent">
+    <form action="/question" method="post">
+    <input type="hidden" name="efquestion" value="{{ fquestion.key.urlsafe() }}">
+      <div>Title: </br><textarea name="eftitle" rows="3" cols="60" required>{{ fquestion.title }}</textarea></div>
+      <div>Content: </br><textarea name="efcontent" rows="10" cols="60" required>{{ fquestion.content }}</textarea></div>
+      <div>
+      <input type="submit" value="Finish Edit">&nbsp;
+      <input type="reset" value="Reset">
+      </div>
+    </form>
+    <a href="/personal">Back</a>
+  </div>
+  {% else %}
+  <div id="container" aligh="center">
+<div id="header">
+    <h1>{{ user.nickname() }}, Edit your answer</h1>
+  <br/>
+  </div>
+  <div id="newcontent">
+    <form action="/answer" method="post">
+    <input type="hidden" name="eanswer" value="{{ answer.key.urlsafe() }}">
+      <div>Title: </br><textarea name="eatitle" rows="3" cols="60" required>{{ answer.title }}</textarea></div>
+      <div>Content: </br><textarea name="eacontent" rows="10" cols="60" required>{{ answer.content }}</textarea></div>
+      <div>
+      <input type="submit" value="Finish Edit">&nbsp;
+      <input type="reset" value="Reset">
+      </div>
+    </form>
+    <a href="/personal">Back</a>
+  </div>
+  {% endif %}
+  <div id="footer">
+  <br/>
+Copyright © 2014 | All Rights Reserved  
+</div>
+</div>
+  </body>
+</html>
+{% endautoescape %}
